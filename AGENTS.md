@@ -32,6 +32,7 @@ Update the affected content, rather than appending an unrelated note:
 - New progress belongs in the relevant chapter record. Date the reported event and identify its supporting artifact when available. A plan or self-report must not become a measured result or signed commitment.
 - Append one concise entry to `updates` with date, source and affected thesis/record/section targets. Preserve prior entries. Update `meta.updatedAt` and increment `meta.revision`.
 - Keep `meta.sourceReviewedAt` and source coverage separate from the website update date. Updating one view does not refresh every old relationship, grant term or claim.
+- When evidence or priorities change, update the relevant `directionAssessments` too. Keep practical next action, technical feasibility, potential significance, commercial validation and bounded alignment contribution separate. Never turn these judgments into invented numerical scores or a percentage of alignment solved. Candidate nodes branch independently from role discussions; do not restore a chain between people.
 
 The thesis is a maintained interpretation, not evidence of universal agreement. Retain unresolved conflicts and attributed historical positions. Preserve original grant application text, budgets, source references and the embedded sketch unless the user explicitly requests a change. Use descriptive wording. Label hypothetical examples and proposed experiments.
 

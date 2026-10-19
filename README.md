@@ -4,6 +4,8 @@ An encrypted, password-protected working archive based on the existing `startup-
 
 The site contains a working thesis, dated update history, 114 source records and an alignment experiment section spanning eight scales. Current positions distinguish explicit direction, source opinions, working hypotheses and open decisions. Earlier positions remain in revision history. Mechanism diagrams and support/counterexample views describe proposed tests; their example outcomes are illustrative, not measured results. Original grant application text, budgets, source references and the handwritten sketch are retained.
 
+Research and product directions are compared separately on practicality, technical feasibility, potential significance, commercial validation and bounded alignment contribution. These are qualitative assessments with evidence and explicit limits, not invented scores or a percentage of alignment solved. People nodes branch independently from role discussions.
+
 The website is a single self-contained `index.html`. Its binder and embedded source image remain encrypted with AES-256-GCM. Unlocking derives the key locally using PBKDF2-SHA-256 with 600,000 iterations. The password is not part of this repository.
 
 ## Hosting

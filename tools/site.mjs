@@ -81,13 +81,27 @@ function validate(html, data) {
       assert(revision.date && revision.previousPosition && revision.reason, 'A thesis revision needs its date, previous position and reason.');
     }
   }
+  if (data.directionAssessments) {
+    const items = data.directionAssessments.items || [];
+    unique(items.map(item => item.id), 'Direction assessments');
+    for (const item of items) {
+      assert(['research', 'product'].includes(item.kind) && item.title && item.stage, 'A direction needs its kind, title and evidence stage.');
+      assert(Array.isArray(item.recordIds) && item.recordIds.length && item.recordIds.every(id => ids.has(id)), 'A direction references a missing record.');
+      for (const field of ['priority', 'practicality', 'feasibility', 'impact', 'commercial']) {
+        assert(item[field] && typeof item[field].label === 'string' && typeof item[field].reason === 'string', `A direction needs a ${field} assessment.`);
+      }
+      assert(item.alignment && ['label', 'property', 'remaining', 'claimBoundary'].every(field => typeof item.alignment[field] === 'string' && item.alignment[field].trim()), 'A direction needs a bounded alignment assessment.');
+      assert(item.evidence && item.evidence.status && item.evidence.summary && Array.isArray(item.evidence.sources) && item.evidence.sources.length, 'A direction needs its evidence and provenance.');
+      for (const source of item.evidence.sources) assert(source && ['label', 'date', 'kind', 'note'].every(field => typeof source[field] === 'string' && source[field].trim()), 'A direction has incomplete evidence provenance.');
+    }
+  }
   unique((data.updates || []).map(u => u.id), 'Updates');
   for (const update of data.updates || []) {
     assert(/^\d{4}-\d{2}-\d{2}$/.test(update.date || '') && update.summary && update.source, 'An update needs an ISO date, summary and source.');
     for (const target of update.targets || []) {
       if (target.kind === 'record') assert(ids.has(target.id), 'An update references a missing record.');
       else if (target.kind === 'thesis') assert(data.thesis?.views?.some(v => v.id === target.id), 'An update references a missing thesis view.');
-      else if (target.kind === 'section') assert(['thesis', 'alignment', 'updates', 'map', 'binder'].includes(target.id), 'An update references an unknown section.');
+      else if (target.kind === 'section') assert(['thesis', 'directions', 'alignment', 'updates', 'map', 'binder'].includes(target.id), 'An update references an unknown section.');
       else throw new Error('Unknown update target kind.');
     }
   }
