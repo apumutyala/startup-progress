@@ -4,3 +4,6 @@
 !.nojekyll
 !index.html
 !README.md
+!AGENTS.md
+!tools/
+!tools/site.mjs
