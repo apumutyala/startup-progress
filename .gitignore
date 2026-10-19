@@ -1,0 +1,6 @@
+# Publish only the encrypted website and its hosting documentation.
+*
+!.gitignore
+!.nojekyll
+!index.html
+!README.md
