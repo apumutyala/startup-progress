@@ -6,6 +6,8 @@ The site contains a working thesis, dated update history, 114 source records and
 
 Research and product directions are compared separately on practicality, technical feasibility, potential significance, commercial validation and bounded alignment contribution. These are qualitative assessments with evidence and explicit limits, not invented scores or a percentage of alignment solved. People nodes branch independently from role discussions. The project map opens as a full-window canvas with pan, zoom and floating node details.
 
+Unlocking opens a five-track project map. Tracks separate research, business deployments, public-interest work, funding and organization, and current experiments. Search and a list view provide equivalent access to the map entries. Each entry distinguishes dated evidence, uncertainty, next actions and typed relationships. Selected tracks and nodes have stable links, with browser Back and Forward navigation.
+
 The website is a single self-contained `index.html`. Its binder and embedded source image remain encrypted with AES-256-GCM. Unlocking derives the key locally using PBKDF2-SHA-256 with 600,000 iterations. The password is not part of this repository.
 
 ## Hosting

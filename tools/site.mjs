@@ -95,6 +95,38 @@ function validate(html, data) {
       for (const source of item.evidence.sources) assert(source && ['label', 'date', 'kind', 'note'].every(field => typeof source[field] === 'string' && source[field].trim()), 'A direction has incomplete evidence provenance.');
     }
   }
+  if (data.projectMap) {
+    const map = data.projectMap, tracks = map.tracks || [], nodes = map.nodes || [];
+    assert(/^\d{4}-\d{2}-\d{2}$/.test(map.asOf || '') && map.summary, 'The project map needs its date and summary.');
+    unique([...tracks, ...nodes].map(item => item.id), 'Project map routes');
+    const trackIds = new Set(tracks.map(track => track.id)), nodeIds = new Set(nodes.map(node => node.id));
+    const statuses = new Set(['active', 'proposed', 'blocked', 'failed', 'historical']);
+    const relations = new Set(['requires', 'supports', 'informs', 'alternative', 'blocks', 'tests', 'proposed-funding', 'role-discussion']);
+    assert([...tracks, ...nodes].every(item => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(item.id)), 'Map route IDs must be lowercase words separated by single hyphens.');
+    for (const track of tracks) {
+      assert(track.title && track.description && Array.isArray(track.nodeIds) && track.nodeIds.length, 'Each map track needs its description and nodes.');
+      assert(track.nodeIds.every(id => nodes.some(node => node.id === id && node.track === track.id)), 'A map track contains an unresolved or misassigned node.');
+    }
+    for (const node of nodes) {
+      assert(trackIds.has(node.track) && statuses.has(node.statusCategory), 'A map node has an invalid track or status category.');
+      assert(tracks.find(track => track.id === node.track).nodeIds.includes(node.id), 'A map node is missing from its track.');
+      assert(/^\d{4}-\d{2}-\d{2}$/.test(node.date || ''), 'A map node needs a dated status.');
+      for (const field of ['title', 'description', 'status', 'uncertainty', 'next']) assert(typeof node[field] === 'string' && node[field].trim(), `A map node needs ${field}.`);
+      assert(node.evidence?.status && node.evidence.summary && Array.isArray(node.evidence.sources) && node.evidence.sources.length, 'A map node needs evidence and provenance.');
+      for (const source of node.evidence.sources) assert(['label', 'date', 'kind', 'note'].every(field => typeof source[field] === 'string' && source[field].trim()), 'A map evidence source has incomplete provenance.');
+      for (const dependency of node.dependencies || []) assert(nodeIds.has(dependency.target) && relations.has(dependency.type) && dependency.label, 'A map dependency needs a valid target and meaning.');
+      for (const link of node.links || []) {
+        assert(link.label && typeof link.target === 'string', 'A map link needs a label and target.');
+        if (link.type === 'record') assert(ids.has(link.target), 'A map link references a missing record.');
+        else if (link.type === 'thesis') assert(data.thesis?.views?.some(view => view.id === link.target), 'A map link references a missing thesis view.');
+        else if (link.type === 'direction') assert(data.directionAssessments?.items?.some(item => item.id === link.target), 'A map link references a missing direction assessment.');
+        else if (link.type === 'page') assert(/^(thesis|directions(?:\/(?:research|product))?|binder|alignment|updates|map(?:\/[a-z0-9-]+)?|chapter\/[a-z0-9-]+|record\/[a-zA-Z0-9-]+)$/.test(link.target), 'A map page link has an invalid route.');
+        else if (link.type === 'url') { const url = new URL(link.target); assert(url.protocol === 'https:' && !url.username && !url.password, 'Map external links must use HTTPS without credentials.'); }
+        else throw new Error('Unknown map link type.');
+      }
+    }
+    for (const edge of map.edges || []) assert(nodeIds.has(edge.from) && nodeIds.has(edge.to) && relations.has(edge.type) && edge.label, 'A map edge needs valid endpoints and an explicit meaning.');
+  }
   unique((data.updates || []).map(u => u.id), 'Updates');
   for (const update of data.updates || []) {
     assert(/^\d{4}-\d{2}-\d{2}$/.test(update.date || '') && update.summary && update.source, 'An update needs an ISO date, summary and source.');
@@ -110,7 +142,7 @@ function validate(html, data) {
     assert(data.meta.sourceReviewedAt && data.meta.sourceCoverage, 'Keep the source-review date and coverage separate from the site update date.');
     assert(Number.isInteger(data.meta.revision) && data.meta.revision > 0, 'Use a positive site revision.');
   }
-  return { chapters: data.chapters.length, records: records.length, thesisViews: data.thesis?.views?.length || 0, updates: data.updates?.length || 0 };
+  return { chapters: data.chapters.length, records: records.length, thesisViews: data.thesis?.views?.length || 0, updates: data.updates?.length || 0, mapTracks: data.projectMap?.tracks?.length || 0, mapNodes: data.projectMap?.nodes?.length || 0 };
 }
 async function credentials() {
   let raw = '';
