@@ -1,6 +1,8 @@
 # Maintaining startup-progress
 
-This repository maintains Alternative Systems at `https://altsys.ai/` and `https://www.altsys.ai/`, using Workers Static Assets on the `altsys-site` Worker. The existing GitHub Pages URL remains a secondary copy. Keep the existing audience and password protection when updating it.
+This repository owns only the password-protected progress artifact, available at `https://altsys.ai/progress/` and its standalone GitHub Pages copy. It is NOT the public landing-page source. Keep the existing audience and password protection when updating it.
+
+The public website comes from `C:/Users/apumu/research/CHLabs/alternative-systems`, branch `altsys-public-site` in the original `chaotic-harmony-labs` Git repository. Its source was verified against the live chaoticharmonylabs.org site. Deploy `altsys-site` only from that public-site worktree. Never re-create an altsys-site Wrangler config in this progress-only repository.
 
 ## Editable source
 
@@ -41,7 +43,7 @@ The thesis is a maintained interpretation, not evidence of universal agreement. 
 
 Validate and package with the helper. Inspect the affected behavior in a real browser, including unlocking, navigation, relevant links and locking; check mobile layout for UI changes. Keep checks proportional to the change. Review staged files so only the encrypted site, maintenance code and public documentation are included.
 
-For an authorized update, commit and push `main`, run `npm run build`, and deploy the encrypted `dist/index.html` using `npm run deploy`. Confirm the Workers deployment and both custom domains. GitHub Pages continues to serve the repository root as a secondary copy. Never deploy the private source directory or repository root as the static asset directory.
+For an authorized progress update, package with `tools/site.mjs`, commit and push `main`, then run `npm run sync:progress`, `npm run build` and `npm run deploy` from the public-site worktree. Verify `/progress/`, its public navigation link and password protection. Its build composes the decorative public-site background around the encrypted artifact without exposing the private dataset. GitHub Pages continues to serve this repository root as a standalone copy.
 
 Never modify or delete existing DNS records on altsys.ai. Its MX, SPF TXT and cf2024-1._domainkey TXT records support live Email Routing. Do not run email-routing commands. Check for hostname conflicts and report them rather than replacing records. Use an interactive terminal for Wrangler deployments with custom domains: noninteractive Wrangler may automatically replace conflicting records. Decline any conflict-replacement prompt. No Cloudflare Pages project is used.
 

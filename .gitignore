@@ -7,7 +7,3 @@
 !AGENTS.md
 !tools/
 !tools/site.mjs
-!tools/build.mjs
-!package.json
-!package-lock.json
-!wrangler.jsonc

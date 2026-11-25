@@ -12,9 +12,9 @@ The website is a single self-contained `index.html`. Its binder and embedded sou
 
 ## Hosting
 
-The primary site is [altsys.ai](https://altsys.ai/), also available at [www.altsys.ai](https://www.altsys.ai/). Cloudflare Workers Static Assets serves the `altsys-site` Worker. The existing GitHub Pages site remains a secondary copy; no Cloudflare Pages project is used.
+This repository contains the encrypted [progress page](https://altsys.ai/progress/), not the public homepage. The public Alternative Systems website is maintained in the `alternative-systems` worktree of the original `chaotic-harmony-labs` repository and is deployed through Workers Static Assets. The existing GitHub Pages site remains a standalone copy of this progress artifact.
 
-This is plain HTML with client-side navigation. `npm run build` copies only the encrypted `index.html` into `dist`; `npm run deploy` publishes it using Wrangler. `npm run preview` starts Wrangler locally. Keep `dist`, dependencies, credentials and local Wrangler state out of Git.
+After updating and encrypting this artifact, run `npm run sync:progress`, `npm run build` and `npm run deploy` from `C:/Users/apumu/research/CHLabs/alternative-systems`. That public-site build places the artifact at `/progress/` with the original trajectory background. This repository deliberately has no Worker deployment configuration, to prevent replacing the homepage with the progress page.
 
 Existing DNS records must never be modified or deleted, particularly the Email Routing MX, SPF and DKIM records. Custom domains may add website records only when no conflicting records exist. Run deployments in an interactive terminal and decline any prompt to replace an existing record. See [AGENTS.md](AGENTS.md) for the maintenance constraints.
 
