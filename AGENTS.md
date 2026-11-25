@@ -1,6 +1,6 @@
 # Maintaining startup-progress
 
-This repository publishes the password-protected site at `https://apumutyala.github.io/startup-progress/`. GitHub Pages serves `main` from the root. Keep the existing audience and password protection when updating it.
+This repository maintains Alternative Systems at `https://altsys.ai/` and `https://www.altsys.ai/`, using Workers Static Assets on the `altsys-site` Worker. The existing GitHub Pages URL remains a secondary copy. Keep the existing audience and password protection when updating it.
 
 ## Editable source
 
@@ -41,4 +41,8 @@ The thesis is a maintained interpretation, not evidence of universal agreement. 
 
 Validate and package with the helper. Inspect the affected behavior in a real browser, including unlocking, navigation, relevant links and locking; check mobile layout for UI changes. Keep checks proportional to the change. Review staged files so only the encrypted site, maintenance code and public documentation are included.
 
-Commit the completed change and push to the existing Pages branch when the user has requested a site update. Confirm the Pages build for that commit and verify the live result. Do not schedule background monitoring, contact people, submit applications or execute research merely because a site entry mentions them.
+For an authorized update, commit and push `main`, run `npm run build`, and deploy the encrypted `dist/index.html` using `npm run deploy`. Confirm the Workers deployment and both custom domains. GitHub Pages continues to serve the repository root as a secondary copy. Never deploy the private source directory or repository root as the static asset directory.
+
+Never modify or delete existing DNS records on altsys.ai. Its MX, SPF TXT and cf2024-1._domainkey TXT records support live Email Routing. Do not run email-routing commands. Check for hostname conflicts and report them rather than replacing records. Use an interactive terminal for Wrangler deployments with custom domains: noninteractive Wrangler may automatically replace conflicting records. Decline any conflict-replacement prompt. No Cloudflare Pages project is used.
+
+Do not schedule background monitoring, contact people, submit applications or execute research merely because a site entry mentions them.
